@@ -8,7 +8,7 @@ import os
 from torch.utils.data import DataLoader
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = DenseNet121(spatial_dims=2, in_channels=1, out_channels=2).to(device)
-model.load_state_dict(torch.load(os.path.join("./model_weight", "best_metric_model.pth")))
+model.load_state_dict(torch.load(os.path.join("./model_weight", "best_metric_model.pth"), map_location=torch.device('cpu')))
 model.eval()
 
 class BrainClassificationDatasetinference(torch.utils.data.Dataset):
