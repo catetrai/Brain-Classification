@@ -2,6 +2,7 @@ import logging
 import argparse
 import json
 import csv
+import warnings
 from pathlib import Path
 from textwrap import dedent
 from statistics import median_low
@@ -73,8 +74,18 @@ def main():
         type=argparse.FileType("w", encoding="utf-8"),
         help="Optional CSV file where results will be written (by default, writes to stdout)",
     )
+    parser.add_argument(
+        "-q",
+        "--quiet",
+        action="store_true",
+        help="Disable log output"
+    )
+
     args = parser.parse_args()
 
+    if args.quiet:
+        logging.getLogger().disabled = True
+        warnings.filterwarnings('ignore')
 
     columns = ["series_instance_uid", "dir_path", "prediction"]
     if args.csv_file:
