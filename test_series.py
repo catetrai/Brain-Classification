@@ -8,6 +8,8 @@ from textwrap import dedent
 from statistics import median_low
 
 from pydicom import Dataset, dcmread
+from pydicom.errors import InvalidDicomError
+
 from Classificazione import classificazione
 
 
