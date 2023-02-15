@@ -37,7 +37,7 @@ def classificazione(input_image) :
      
     Returns: 
     
-        ritorna un booleano 
+        ritorna un generator di predizioni delle immagini input (0=non-brain, 1=brain)
     """
     transforms =Compose([LoadImage(image_only=True),EnsureChannelFirst(),NormalizeIntensity(),Resize((256,256))])
     test_ds = BrainClassificationDatasetinference(input_image,transforms)
@@ -47,10 +47,7 @@ def classificazione(input_image) :
             test_images = (test_data.to(device))
             pred = model(test_images).argmax(dim=1)
             for i in range(len(pred)):
-                if pred[i].item() == 1 : 
-                    return True
-                else :
-                    return False
+                yield pred[i].item()
     
 def main () :
     parser=argparse.ArgumentParser(
