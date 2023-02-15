@@ -102,24 +102,38 @@ def main():
         raise ValueError("Must specify either '--series-paths-file' or '--series-dirs'")
         
 
-    results_all = {}
+    results_all = []
+    image_paths = []
     for series_dir in all_series:
-        logging.debug("Predicting series '%s'", series_dir)
-        results = {}
+        series_dir = Path(series_dir)
 
         try:
-            results = predict_series(Path(series_dir))
-            if "dir_path" in results:
-                results_all[results["dir_path"]] = {"prediction": results["prediction"]}
+            central_slice_path = select_central_slice_in_series(series_dir)
+            image_paths.append(str(central_slice_path))
 
-            if args.csv_file:
-                writer.writerow(results)
+            with dcmread(central_slice_path, stop_before_pixels=True, specific_tags=["SeriesInstanceUID"]) as img_ds:
+                series_instance_uid = img_ds.SeriesInstanceUID
+
+            results_all.append({
+                "series_instance_uid": series_instance_uid,
+                "dir_path": str(series_dir),
+                "prediction": None
+            })
 
         except Exception as ex:
-            logging.error("Error predicting series '%s'", series_dir)
+            logging.error("Error getting central slice for series '%s'", series_dir)
             logging.exception(ex)
 
-    print(json.dumps(results_all))
+    for i, result in enumerate(classificazione(image_paths)):
+        results_all[i]["prediction"] = result
+    
+        # Optionally write to CSV output file
+        if args.csv_file:
+            writer.writerow(results_all[i])
+
+    # Write to stdout
+    results_pretty = {res["dir_path"]: {"prediction": res["prediction"]} for res in results_all}
+    print(json.dumps(results_pretty))
 
 
 if __name__ == "__main__":
