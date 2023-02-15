@@ -34,14 +34,16 @@ def predict_series(series_dir: Path) -> dict:
     """Classify series based on central slice image"""
 
     central_slice_image_path = select_central_slice_in_series(series_dir)
-    try:
-        prediction = classificazione([str(central_slice_image_path)])
-    except Exception as ex:
-        logging.error(ex)
-        prediction = None
+    prediction = classificazione([str(central_slice_image_path)])
 
-    return {"dir_path": str(series_dir), "prediction": prediction}
-    
+    with dcmread(central_slice_image_path, stop_before_pixels=True, specific_tags=["SeriesInstanceUID"]) as img_ds:
+        series_instance_uid = img_ds.SeriesInstanceUID
+
+    return {
+        "series_instance_uid": series_instance_uid,
+        "dir_path": str(series_dir),
+        "prediction": prediction
+    }
 
 
 def main():
@@ -109,3 +111,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
