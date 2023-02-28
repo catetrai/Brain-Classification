@@ -65,6 +65,7 @@ dependencies:
     - et-xmlfile==1.1.0
     - fastjsonschema==2.16.2
     - flake8==5.0.4
+    - flask==2.2.3
     - fonttools==4.38.0
     - fqdn==1.5.1
     - idna==3.4
@@ -78,6 +79,7 @@ dependencies:
     - ipython-genutils==0.2.0
     - isoduration==20.11.0
     - isort==5.10.1
+    - itsdangerous==2.1.2
     - jaraco-classes==3.2.3
     - jedi==0.18.2
     - jeepney==0.8.0
@@ -227,6 +229,7 @@ dependencies:
     - webcolors==1.12
     - webencodings==0.5.1
     - websocket-client==1.5.1
+    - werkzeug==2.2.3
     - whatthepatch==1.0.3
     - wrapt==1.14.1
     - wurlitzer==3.0.3
