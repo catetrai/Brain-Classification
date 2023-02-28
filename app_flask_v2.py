@@ -13,7 +13,7 @@ transforms = Compose([LoadImage(image_only=True,reader="PydicomReader"),EnsureCh
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = DenseNet121(spatial_dims=2, in_channels=1, out_channels=2).to(device)
 root_dir = "./model_weight/"
-model.load_state_dict(torch.load(os.path.join(root_dir, "best_metric_model.pth")))
+model.load_state_dict(torch.load(os.path.join(root_dir, "best_metric_model.pth"), map_location=torch.device('cpu') if not torch.cuda.is_available() else None))
 model.eval()
 transforms = Compose([AddChannel(),NormalizeIntensity(),Resize((256,256))])
 class BrainClassificationDatasetinference(torch.utils.data.Dataset):
