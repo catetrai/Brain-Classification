@@ -7,5 +7,4 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-#CMD [ "python3", "./app_flask_v2.py"]
 CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
