@@ -2,7 +2,7 @@
 
 Binary classification of DICOM images into brain or non-brain
 
-[[_TOC_]]
+[[__TOC__]]
 
 ## Installation
 
@@ -33,21 +33,25 @@ Then, run the Docker container in detached mode:
 $ docker run -d --name brain-classif -p 5000:5000 brain-classif
 ```
 
-The container will start a webserver (from the Flask app script [app.py](app.py)) running at `localhost:5000`.
+The container will start a webserver running at `localhost:5000`.
 
 ## Usage
 
-The Flask app run via [app.py](app.py) serves the following REST endpoints:
+The Flask app (run via [app.py](app.py)) serves the following REST endpoints:
 
 ### `POST /predict`
 
-Example:
+- **Query parameters**: <none>
+- **Request body**: a single binary DICOM file (multipart-encoded data)
+- **Response**: a JSON object containing the predicted label
+
+Example in Python:
 
 
 ```python
 import requests
 
-# note: open file in binary mode ('rb')
+# note: open file in binary mode ('rb' flag)
 file = {"file": open("/path/to/image.dcm", "rb")}
 
 resp = requests.post("http://localhost:5000/predict", files=file)
