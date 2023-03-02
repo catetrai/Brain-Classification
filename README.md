@@ -2,11 +2,9 @@
 
 Binary classification of DICOM images into brain or non-brain
 
-[[__TOC__]]
-
 ## Installation
 
-### Using conda
+### Install in conda environment
 
 Create conda environment from YAML file:
 
@@ -18,7 +16,7 @@ $ conda env create --name brainclassif --file environment.yml
 This will install Python packages using pip in the conda environment directly.
 You do not need to create a Python virtual environment in addition.
 
-### Using Docker
+### Install in Docker
 
 Build the Docker image from Dockerfile:
 
@@ -41,12 +39,11 @@ The Flask app (run via [app.py](app.py)) serves the following REST endpoints:
 
 ### `POST /predict`
 
-- **Query parameters**: <none>
+- **Query parameters**: (none)
 - **Request body**: a single binary DICOM file (multipart-encoded data)
 - **Response**: a JSON object containing the predicted label
 
 Example in Python:
-
 
 ```python
 import requests
