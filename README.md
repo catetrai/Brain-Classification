@@ -39,11 +39,15 @@ The Flask app (run via [app.py](app.py)) serves the following REST endpoints:
 
 ### `POST /predict`
 
-- **Query parameters**: (none)
-- **Request body**: a single binary DICOM file (multipart-encoded data)
-- **Response**: a JSON object containing the predicted label
+Classify one or more DICOM images as brain (label `1`) or non-brain (label `0`).
 
-Example in Python:
+- **Query parameters**: (none)
+- **Request body**: a single or multiple binary DICOM file(s) (multipart-encoded data)
+- **Response**: a JSON array containing, for each input file, DICOM image/series identifiers and predicted label
+
+Examples in Python:
+
+Predict a single image:
 
 ```python
 import requests
@@ -55,5 +59,28 @@ resp = requests.post("http://localhost:5000/predict", files=file)
 result = resp.json()
 print(result)
 
-# {"class_name": 1}
+# [{'prediction': 0, 'series_instance_uid': 'xxx', 'sop_instance_uid': 'xxx'}]
 ```
+
+Predict multiple images in a single request:
+
+```python
+import requests
+
+# note: open files in binary mode ('rb' flag)
+files = [
+    ("file", open("/path/to/image1.dcm", "rb")),
+    ("file", open("/path/to/image2.dcm", "rb")),
+]
+
+resp = requests.post("http://localhost:5000/predict", files=files)
+result = resp.json()
+print(result)
+
+# [
+#   {'prediction': 0, 'series_instance_uid': 'xxx', 'sop_instance_uid': 'xxx'},
+#   {'prediction': 1, 'series_instance_uid': 'yyy', 'sop_instance_uid': 'yyy'}
+# ]
+```
+
+
