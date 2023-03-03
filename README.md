@@ -45,7 +45,7 @@ Classify one or more DICOM images as brain (label `1`) or non-brain (label `0`).
 - **Request body**: a single or multiple binary DICOM file(s) (multipart-encoded data)
 - **Response**: a JSON array containing, for each input file, DICOM image/series identifiers and predicted label
 
-Examples in Python:
+#### Examples in Python
 
 Predict a single image:
 
