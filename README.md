@@ -1,6 +1,6 @@
 # Brain-Classification
 
-Binary classification of DICOM images into brain or non-brain
+Binary classification of MR DICOM images into brain or non-brain.
 
 ## Installation
 
